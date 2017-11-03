@@ -15,6 +15,7 @@
 		9C873DF81FAC9AD50005022C /* TMDBRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C873DF71FAC9AD50005022C /* TMDBRequests.swift */; };
 		9C873DFA1FAC9EFC0005022C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C873DF91FAC9EFC0005022C /* HomeViewController.swift */; };
 		9CCE6D741FACAC4100AB6091 /* TMDBConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCE6D731FACAC4100AB6091 /* TMDBConstants.swift */; };
+		D95964261FACF42A0026EE0B /* LoginTextFieldsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95964251FACF42A0026EE0B /* LoginTextFieldsDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		9C873DF71FAC9AD50005022C /* TMDBRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBRequests.swift; sourceTree = "<group>"; };
 		9C873DF91FAC9EFC0005022C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9CCE6D731FACAC4100AB6091 /* TMDBConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBConstants.swift; sourceTree = "<group>"; };
+		D95964251FACF42A0026EE0B /* LoginTextFieldsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldsDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		9C873DE31FAC66770005022C /* RealRickMovies */ = {
 			isa = PBXGroup;
 			children = (
+				D95964241FACF40B0026EE0B /* Delegates */,
 				9C873DFC1FAC9F210005022C /* Storyboard */,
 				9C873DFB1FAC9F020005022C /* Controller */,
 				9C873DF61FAC9AAD0005022C /* Helpers */,
@@ -95,6 +98,14 @@
 				9C873DE81FAC66770005022C /* Main.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		D95964241FACF40B0026EE0B /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				D95964251FACF42A0026EE0B /* LoginTextFieldsDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,6 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D95964261FACF42A0026EE0B /* LoginTextFieldsDelegate.swift in Sources */,
 				9C873DE71FAC66770005022C /* ViewController.swift in Sources */,
 				9C873DF81FAC9AD50005022C /* TMDBRequests.swift in Sources */,
 				9C873DE51FAC66770005022C /* AppDelegate.swift in Sources */,
