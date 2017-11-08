@@ -10,9 +10,7 @@ import UIKit
 
 class HomeViewController: UITableViewController {
     
-    var imageBackdrop: UIImage!
     var arrayMovies: Array<[String:AnyObject]>!
-    var imageString: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,19 +18,30 @@ class HomeViewController: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         getLatestMovie()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrayMovies.count
+        return self.arrayMovies.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as UITableViewCell!
-        cell?.imageView!.image = imageBackdrop
-//        let movie = array[(indexPath as NSIndexPath).row]
-//        cell?.textLabel?.text = movie["title"] as? String
+
+        let movie = arrayMovies[(indexPath as NSIndexPath).row]
+        let imagePath = movie["poster_path"] as! String
+
+        let urlString = URL(string: "https://image.tmdb.org/t/p/w500\(imagePath)")
+        if let imageData = try? Data(contentsOf: urlString!) {
+            cell?.imageView!.image = UIImage(data: imageData)
+        } else {
+            print("error loading image")
+        }
+
+        cell?.textLabel?.text = movie["title"] as? String
+
         return cell!
     }
     
@@ -46,7 +55,7 @@ class HomeViewController: UITableViewController {
                     let parsedResults: [String:AnyObject]!
                     do {
                         parsedResults = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
-                        print(parsedResults)
+                        
                         self.arrayMovies = parsedResults["results"] as? [[String:AnyObject]]
                     } catch {
                         print("An error with parsing")
@@ -56,20 +65,7 @@ class HomeViewController: UITableViewController {
             } else {
                 print("there was an error: \(error!)")
             }
-            self.getImage()
         }
         task.resume()
-    }
-    func getImage(){
-        let urlString = URL(string: "https://image.tmdb.org/t/p/w500/kqjL17yufvn9OVLyXYpvtyrFfak.jpg")
-        if let imageData = try? Data(contentsOf: urlString!) {
-            DispatchQueue.main.async {
-                self.imageBackdrop = UIImage(data: imageData)
-                self.tableView.reloadData()
-            }
-        } else {
-            print("error loading image")
-        }
-        
     }
 }
