@@ -10,11 +10,11 @@ import UIKit
 
 class HomeViewController: UITableViewController {
     
-    var arrayMovies: Array<[String:AnyObject]>!
+    var arrayMovies: Array<[String:AnyObject]>! = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,8 +55,10 @@ class HomeViewController: UITableViewController {
                     let parsedResults: [String:AnyObject]!
                     do {
                         parsedResults = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
-                        
                         self.arrayMovies = parsedResults["results"] as? [[String:AnyObject]]
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
                     } catch {
                         print("An error with parsing")
                         return

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct TMDBMovie {
+struct Movie {
     
     let title: String
     let id: Int

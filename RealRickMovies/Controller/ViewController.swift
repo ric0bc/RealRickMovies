@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwdTextField: UITextField!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
     
     var requestToken: String!
     var usernameText: String!
@@ -24,8 +26,13 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         usernameTextField.delegate = textFieldDelegate
         passwdTextField.delegate = textFieldDelegate
+        
+        loginButton.layer.cornerRadius = loginButton.frame.height / 2
+        loginButton.frame.size = CGSize(width: Double(loginButton.frame.width), height: Double(loginButton.frame.height * 2))
+        
         activityIndicatorView.hidesWhenStopped = true
     }
     
@@ -33,7 +40,7 @@ class ViewController: UIViewController {
         
         activityIndicatorView.startAnimating()
         
-        let token = Constants.tmdbURL + "token/new?api_key=\(Constants.apiKey)"
+        let token = TMDBConstants.tmdbAuthURL + "token/new?api_key=\(TMDBConstants.apiKey)"
         let tokenURL = URL(string: token)
 //        let request = URLRequest(url: tokenURL!)
         let task = URLSession.shared.dataTask(with: tokenURL!) { (data, response, error) in
@@ -59,11 +66,19 @@ class ViewController: UIViewController {
     }
     
     func loginWithToken() {
-//        let password = "d00msday"
-        let session = Constants.tmdbURL + "token/validate_with_login?api_key=\(Constants.apiKey)&username=\(usernameText!)&password=\(passwdText!)&request_token=\(requestToken!)"
+        let session = TMDBConstants.tmdbAuthURL + "token/validate_with_login?api_key=\(TMDBConstants.apiKey)&username=\(usernameText!)&password=\(passwdText!)&request_token=\(requestToken!)"
         let sessionURL = URL(string: session)
         let request = URLRequest(url: sessionURL!)
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+            
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 400 else {
+                DispatchQueue.main.async {
+                    self.errorLabel.text = "Authentication failed"
+                    self.activityIndicatorView.stopAnimating()
+                }
+                return
+            }
+            
             if error == nil {
                 if let data = data {
                     let parsedData: [String:AnyObject]!
@@ -86,7 +101,7 @@ class ViewController: UIViewController {
     }
 
     func getSessionID(_ requestToken: String) {
-        let session = Constants.tmdbURL + "session/new?api_key=\(Constants.apiKey)&request_token=\(requestToken)"
+        let session = TMDBConstants.tmdbAuthURL + "session/new?api_key=\(TMDBConstants.apiKey)&request_token=\(requestToken)"
         let sessionURL = URL(string: session)
         let request = URLRequest(url: sessionURL!)
         let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
@@ -96,7 +111,7 @@ class ViewController: UIViewController {
                     do {
                         parsedData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:AnyObject]
                         if let sessionID = parsedData["session_id"] as? String {
-                            Constants.sessionID = sessionID
+                            TMDBConstants.sessionID = sessionID
                             self.completeLogin()
                         }
                     } catch {
@@ -121,7 +136,33 @@ class ViewController: UIViewController {
         passwdTextField.resignFirstResponder()
         usernameText = usernameTextField.text!
         passwdText = passwdTextField.text!
-        getRequestToken()
+//        getRequestToken()
+        activityIndicatorView.startAnimating()
+        
+        let url = URL(string: TMDBConstants.tmdbAuthURL + "token/new?api_key=\(TMDBConstants.apiKey)")!
+        
+        TMDBClient.getRequest(for: url){(json) in
+            if let json = json  {
+                let rToken = json["request_token"] as? String
+                
+                let requestTokenURL = URL(string: "\(TMDBConstants.tmdbAuthURL)token/validate_with_login?api_key=\(TMDBConstants.apiKey)&username=\(self.usernameText!)&password=\(self.passwdText!)&request_token=\(rToken!)")!
+                
+                TMDBClient.getRequest(for: requestTokenURL){ (json) in
+                    if let json = json {
+                        let rToken = json["request_token"] as? String
+                        
+                        let sessionIDURL = URL(string: "\(TMDBConstants.tmdbAuthURL)session/new?api_key=\(TMDBConstants.apiKey)&request_token=\(rToken!)")!
+                        
+                        TMDBClient.getRequest(for: sessionIDURL){(json) in
+                            if let json = json {
+                                TMDBConstants.sessionID = json["session_id"] as! String
+                                self.completeLogin()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
