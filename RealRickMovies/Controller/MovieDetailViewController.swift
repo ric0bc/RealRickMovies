@@ -8,15 +8,16 @@
 
 import UIKit
 
-class MovieDetailViewController: UIViewController {
+class MovieDetailViewController: UIViewController, UIScrollViewDelegate {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var posterImage: UIImageView!
     var movie: Movie!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = movie.title
-        
+                
         let image = showImage()
         posterImage.image = image
         

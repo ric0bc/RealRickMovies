@@ -46,7 +46,6 @@ class HomeViewController: UITableViewController {
         }
         task.resume()
     }
-    
 }
 
 extension HomeViewController {
