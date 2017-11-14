@@ -135,7 +135,31 @@
             </objects>
             <point key="canvasLocation" x="2113" y="36"/>
         </scene>
-        <!--Item-->
+        <!--Movie Detail View Controller-->
+        <scene sceneID="Tlm-1T-KdJ">
+            <objects>
+                <viewController storyboardIdentifier="MovieDetailViewController" id="bt4-Rw-Gde" customClass="MovieDetailViewController" customModule="RealRickMovies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qnL-al-DzP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cDn-Rx-P1V">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="439"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="3fs-ug-YIb"/>
+                    </view>
+                    <connections>
+                        <outlet property="posterImage" destination="cDn-Rx-P1V" id="K7O-lb-AAM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iem-Fe-NCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2857.971014492754" y="35.869565217391305"/>
+        </scene>
+        <!--Watchlist-->
         <scene sceneID="1Jx-z2-qvV">
             <objects>
                 <viewController id="yJm-2s-Jg3" sceneMemberID="viewController">
@@ -145,7 +169,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="L7v-wV-tQp"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="gu5-XA-duF"/>
+                    <tabBarItem key="tabBarItem" title="Watchlist" id="gu5-XA-duF"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IH5-5o-8tB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
